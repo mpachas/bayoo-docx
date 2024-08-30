@@ -4,7 +4,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from docx.shared import ElementProxy
-from .text.paragraph import Paragraph
 from .shared import Parented
 
 class Footnotes(ElementProxy):
@@ -65,6 +64,7 @@ class Footnote(Parented):
         """
         Returns a list of paragraph proxy object
         """
+        from .text.paragraph import Paragraph
 
         return [Paragraph(p, self) for p in self._element.p_lst]
 
@@ -125,6 +125,7 @@ class Endnote(Parented):
         """
         Returns a list of paragraph proxy object
         """
+        from .text.paragraph import Paragraph
 
         return [Paragraph(p, self) for p in self._element.p_lst]
 
