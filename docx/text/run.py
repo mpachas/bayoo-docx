@@ -17,6 +17,7 @@ from ..shape import InlineShape
 from ..shared import Parented
 
 from .comment import Comment
+from ..notes import FootnoteReference, EndnoteReference
 
 
 class Run(Parented):
@@ -206,6 +207,22 @@ class Run(Parented):
             return footnote.paragraph.text
         else:
             return None
+
+    @property
+    def footnotes(self):
+        """
+        Return a list of footnote proxy elements.
+        """
+
+        return [FootnoteReference(footnoteReference, self) for footnoteReference in self._r.footnoteReference_lst]
+
+    @property
+    def endnotes(self):
+        """
+        Return a list of endnote proxy elements.
+        """
+
+        return [EndnoteReference(endnoteReference, self) for endnoteReference in self._r.endnoteReference_lst]
 
     @property
     def is_hyperlink(self):

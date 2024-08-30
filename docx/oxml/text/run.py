@@ -35,6 +35,9 @@ class CT_R(BaseOxmlElement):
     cr = ZeroOrMore('w:cr')
     tab = ZeroOrMore('w:tab')
     drawing = ZeroOrMore('w:drawing')
+    footnoteReference = ZeroOrMore('w:footnoteReference')
+    commentReference = ZeroOrMore('w:commentReference')  # Por mis pistolas, por si aporta
+    endnoteReference = ZeroOrMore('w:endnoteReference')
 
     def _insert_rPr(self, rPr):
         self.insert(0, rPr)

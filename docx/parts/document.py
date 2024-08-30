@@ -12,7 +12,7 @@ from docx.parts.settings import SettingsPart
 from docx.parts.story import BaseStoryPart
 from docx.parts.styles import StylesPart
 from docx.parts.comments import CommentsPart
-from docx.parts.footnotes import FootnotesPart
+from docx.parts.footnotes import FootnotesPart, EndnotesPart
 from docx.shape import InlineShapes
 from docx.shared import lazyproperty
 
@@ -167,10 +167,14 @@ class DocumentPart(BaseStoryPart):
 
     @property
     def _comments_part(self):
+        """
+        |FootnotesPart| object related to this package. Creates
+        a default Footnotes part if one is not present.
+        """
         try:
             return self.part_related_by(RT.COMMENTS)
         except KeyError:
-            comments_part = CommentsPart.default(self) 
+            comments_part = CommentsPart.default(self.package)  # ALT TEST: antes ponía self, pero tiene pinta de que es un error
             self.relate_to(comments_part, RT.COMMENTS)
             return comments_part
     
@@ -178,11 +182,54 @@ class DocumentPart(BaseStoryPart):
     def _footnotes_part(self):
         """
         |FootnotesPart| object related to this package. Creates
-        a default Comments part if one is not present.
+        a default Footnotes part if one is not present.
         """
         try:
             return self.part_related_by(RT.FOOTNOTES)
         except KeyError:
-            footnotes_part = FootnotesPart.default(self)
+            footnotes_part = FootnotesPart.default(self.package) # ALT TEST: antes ponía self, pero tiene pinta de que es un error
             self.relate_to(footnotes_part, RT.FOOTNOTES)
             return  footnotes_part
+
+    @property
+    def _endnotes_part(self):
+        """
+        Instance of |EndnotesPart| for this document. Creates an empty endnotes
+        part if one is not present.
+        """
+        try:
+            return self.part_related_by(RT.ENDNOTES)
+        except KeyError:
+            endnotes_part = EndnotesPart.default(self.package)
+            self.relate_to(endnotes_part, RT.ENDNOTES)
+            return endnotes_part
+
+    @property
+    def footnotes(self):
+        """
+        A |Footnotes| object providing access to the footnotes in the footnotes part
+        of this document.
+        """
+        return self._footnotes_part.footnotes
+
+    def get_footnote(self, footnote_id):
+        """
+        Return the footnote matching *footnote_id*. 
+        Returns |None| if no footnote matches *footnote_id*
+        """
+        return self.footnotes.get_by_id(footnote_id)
+
+    @property
+    def endnotes(self):
+        """
+        A |Endnotes| object providing access to the endnotes in the endnotes part
+        of this document.
+        """
+        return self._endnotes_part.endnotes
+
+    def get_endnote(self, endnote_id):
+        """
+        Return the endnote matching *endnote_id*. 
+        Returns |None| if no endnote matches *endnote_id*
+        """
+        return self.endnotes.get_by_id(endnote_id)
