@@ -59,8 +59,9 @@ class CT_Footnote(BaseOxmlElement):
     A ``<w:footnote>`` element, a container for Footnote properties 
     """
     _id = RequiredAttribute('w:id', ST_DecimalNumber)
-    p = ZeroOrOne('w:p', successors=('w:footnote',))
-    # p = OneOrMore('w:p') # ALT TEST
+    # p = ZeroOrOne('w:p', successors=('w:footnote',)) # ALT TEST
+    # p = OneOrMore('w:p') # ALT TEST original
+    p = OneOrMore('w:p', successors=('w:footnote',)) # ALT TEST con successors
 
     @classmethod
     def new(cls, _id):
