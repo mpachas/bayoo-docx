@@ -60,6 +60,13 @@ class CT_P(BaseOxmlElement):
         
         return footnote
 
+    def add_empty_fn(self, footnotes_part):
+        footnote = footnotes_part.add_footnote()
+        _r = self.add_r()
+        _r.add_footnote_reference(footnote._id)
+        
+        return footnote
+
     def footnote_style(self):
         pPr = self.get_or_add_pPr()
         rstyle = pPr.get_or_add_pStyle()

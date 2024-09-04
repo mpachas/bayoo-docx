@@ -63,6 +63,20 @@ class CT_Footnote(BaseOxmlElement):
     # p = OneOrMore('w:p') # ALT TEST original
     p = OneOrMore('w:p', successors=('w:footnote',)) # ALT TEST con successors
 
+    # Claramente en BAYOO no tenían pensado que las notas pueden tener más de un p, en su caso era ZeroOrOne
+    # Pero en el caso de las notas de pie, pueden tener más de un párrafo, por lo que se cambia a OneOrMore
+    # TODO: add_paragraph method, redo property Paragraph..?, comparar con clase Document o algo... 
+
+    # NOTAS PARA MI:
+    # Lo ideal es que las Clases Footnote y Endnote, en vez de extender de Parented, extiendan de BlockItemContainer (creo),
+    # que extiende Parented y añade funcionalidades de block. La idea es poder usar el método add_paragraph directamente sobre el footnote.
+    # Habría un método rápido para añadir el texto directamente a la nota de pie, sin tener que añadir un párrafo primero.
+    # Habría también un método para añadir párrafos con o sin texto.
+    # Al añadir un párrafo, lo devuelve, por lo que podemos atacar los runs como si fuera un párrafo normal.
+    # Ahora de momento usamos métodos de bajo nivel y falta por hacer el desglose de runs, pero ya tengo el nivel de párrafo.
+    
+    # Habría que hacer lo mismo con las endnotes, que también pueden tener más de un párrafo.
+
     @classmethod
     def new(cls, _id):
         footnote = OxmlElement('w:footnote')

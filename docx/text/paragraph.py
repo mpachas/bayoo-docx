@@ -57,9 +57,12 @@ class Paragraph(Parented):
 
         return comment
     
-    def add_footnote(self, text):
+    def add_footnote(self, text=None):
         footnotes_part = self.part._footnotes_part.element
-        footnote = self._p.add_fn(text, footnotes_part)
+        if text:
+            footnote = self._p.add_fn(text, footnotes_part)
+        else:
+            footnote = self._p.add_empty_fn(footnotes_part)
 
         return footnote
 
