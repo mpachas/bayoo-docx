@@ -84,12 +84,30 @@ class CT_Footnote(BaseOxmlElement):
         
         return footnote
     
+    # OJO: ES EL METODO DE BAJO NIVEL QUE USAMOS PARA AÑADIR PARRAFOS PERO AÑADE EL STYLE DE FOOTNOTEREF, POR LO QUE
+    # LO ENCABEZA EL NUMERO DE NOTA. ESO SOLO LO QUEREMOS PARA EL PRIMER PARRAFO: EL QUE CONTIENE EL NUMERO DE NOTA.
+    # VER SI PARAMETRIZAR EL MÉTODO O HACER OTRO PARA NOSOTROS...DE MOMENTO HACEMOS UN METODO _add_secondary_p, comentando esa linea.
     def _add_p(self, text):
         _p = OxmlElement('w:p')
         _p.footnote_style()
         
         _r = _p.add_r()
         _r.footnote_style()
+        _r = _p.add_r()
+        _r.add_footnoteRef()
+        
+        run = Run(_r, self)
+        run.text = text
+        
+        self._insert_p(_p)
+        return _p
+    
+    def _add_secondary_p(self, text):
+        _p = OxmlElement('w:p')
+        _p.footnote_style()
+        
+        _r = _p.add_r()
+        # _r.footnote_style() # Lo quitamos para que no añada el número de nota al <p> secundario
         _r = _p.add_r()
         _r.add_footnoteRef()
         
