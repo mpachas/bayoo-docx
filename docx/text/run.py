@@ -114,6 +114,28 @@ class Run(Parented):
         """
         self._r.clear_content()
         return self
+    
+    @property
+    def cs_bold(self):
+        """
+        Read/write. Causes the complex script characters of the run to appear in bold.
+        """
+        return self.font.cs_bold
+    
+    @cs_bold.setter
+    def cs_bold(self, value):
+        self.font.cs_bold = value
+    
+    @property
+    def cs_italic(self):
+        """
+        Read/write. Causes the complex script characters of the run to appear in italics.
+        """
+        return self.font.cs_italic
+    
+    @cs_italic.setter
+    def cs_italic(self, value):
+        self.font.cs_italic = value
 
     @property
     def font(self):
